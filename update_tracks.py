@@ -31,7 +31,7 @@ class Update_tracks(tk.Tk):
         self.lb_text = tk.Label(self, text="Track detail:", font=("Helvetica", 12))
         self.lb_text.grid(row=1, column=5, sticky=tk.SW)
         
-        self.text_box = tk.Text(self, width=26, height=5, wrap="none", font=("Helvetica", 15))
+        self.text_box = tk.Text(self, width=30, height=5, wrap="none", font=("Helvetica", 12))
         self.text_box.grid(row=2, column=5, columnspan=5)
 
         self.update_btn = tk.Button(self,text="Update Rating",font=("Helvetica", 15),command=self.update_track)
@@ -39,29 +39,30 @@ class Update_tracks(tk.Tk):
 
     def update_track(self):
         try:
+            track_number = int(self.number_entry.get())
+            key = "%02d" % track_number
+            name = lib.get_name(key)
+            if name is None:
+                set_text(self.text_box, f"Track {key} not found")
+                return
+        except ValueError:
+            set_text(self.text_box, "Invalid number input\nPlease try using numbers\nlike '1' or '01'")
+            return
+        try:
             new_rating = int(self.rating_input.get())
             if new_rating > 5 or new_rating < 0:
                 set_text(self.text_box, "Rating must be a number\nfrom 1 to 5")
                 return
-        except ValueError:
-            set_text(self.text_box, "Invalid rating input\nPlease try using numbers\nlike '1' or '01'")
-            return
-        try:
-            track_number = int(self.number_entry.get())
-            key = "%02d" % track_number
-            name = lib.get_name(key)
-            lib.set_rating(key,new_rating) 
-            if name is not None:
+            else:
+                lib.set_rating(key,new_rating)
                 artist = lib.get_artist(key)
                 rating = lib.get_rating(key)
                 play_count = lib.get_play_count(key)
-                track_details = f"{name}\n{artist}\nrating: {rating}\nplays: {play_count}"
+                track_details = f"Track: {name}\nBy: {artist}\nRating: {rating}\nPlay Count: {play_count}"
                 set_text(self.text_box, track_details)
-            else:
-                set_text(self.text_box, f"Track {key} not found")
         except ValueError:
-            set_text(self.text_box, "Invalid number input\nPlease try using numbers\nlike '1' or '01'")
-        
+            set_text(self.text_box, "Invalid rating input\nPlease try using numbers\nlike '1' or '01'")
+
 if __name__ == "__main__":
     update_tracks = Update_tracks()
     update_tracks.mainloop()

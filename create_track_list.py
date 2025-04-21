@@ -18,12 +18,9 @@ class Create_track_list(tk.Tk):
         self.lb_title = tk.Label(self,text="Playlist",font=("Arial",20,"bold"))
         self.lb_title.grid(row=0,column=0,columnspan=10,sticky=tk.N)
         
-        self.play_list = []
-        
-        self.detail = ""
-        
         self.lb_track = tk.Label(self,text="Track Number:",font=("Helvetica", 15))
         self.lb_track.grid(row=1,column=0,sticky=tk.E)
+        
         self.track_number = tk.Entry(self,width=3)
         self.track_number.grid(row=1,column=1,sticky=tk.W)
         
@@ -48,6 +45,10 @@ class Create_track_list(tk.Tk):
         self.shuffle_btn = tk.Button(self, text="Shuffle",command=self.shuffle_list,font=("Helvetica", 15))
         self.shuffle_btn.grid(row=4,column=0,sticky=tk.N)
         
+        self.play_list = []
+        
+        self.detail = ""
+        
         self.print_detail()
         
     def add_track(self):
@@ -68,10 +69,9 @@ class Create_track_list(tk.Tk):
         except ValueError:
             self.lb_state.configure(text="Invalid input")
 
-
     def play_tracks_list(self):
         if len(self.play_list) == 0:
-            self.lb_state.configure(text="Playlist empty")
+            self.lb_state.configure(text="Playlist is empty")
         else:
             for key in self.play_list:
                 lib.increment_play_count(key)
@@ -80,23 +80,22 @@ class Create_track_list(tk.Tk):
 
     def reset_list(self):
         if len(self.play_list) == 0:
-            self.lb_state.configure(text="Playlist empty")
+            self.lb_state.configure(text="Playlist is empty")
         else:
             self.play_list = []
             self.detail = ""
             self.print_detail()
-            self.lb_state.configure(text="Playlist resetted")
+            self.lb_state.configure(text="Playlist has been reset")
 
     def shuffle_list(self):
         if len(self.play_list) == 0:
-            self.lb_state.configure(text="Playlist empty")
+            self.lb_state.configure(text="Playlist is empty")
         elif len(self.play_list) == 1:
             self.lb_state.configure(text="There is only one track")
-        
         else:            
             shuffle(self.play_list)
             self.print_detail()
-            self.lb_state.configure(text="Playlist shuffled")
+            self.lb_state.configure(text="Playlist has been shuffled")
         
     def print_detail(self):
         tracks_detail =''
