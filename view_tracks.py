@@ -51,9 +51,9 @@ class TrackViewer():
                 rating = lib.get_rating(key)
                 play_count = lib.get_play_count(key)
                 track_details = f"{name}\n{artist}\nrating: {rating}\nplays: {play_count}"
-                set_text(self.track_txt, track_details)
                 self.open_image(key)   
-                self.status_lbl.configure(text="View Track button was clicked!")         
+                self.status_lbl.configure(text="View Track button was clicked!") 
+                set_text(self.track_txt, track_details)
             else:
                 set_text(self.track_txt, f"Track {key} not found")
         except ValueError:
@@ -65,7 +65,7 @@ class TrackViewer():
         self.status_lbl.configure(text="List Tracks button was clicked!")
         
     def open_image(self,key):
-        self.image_tk = Image.open(f"_Track_{key}.jpg").resize((120,120))
+        self.image_tk = Image.open(f"Images\_Track_{key}.jpg").resize((120,120))
         self.image_tk = ImageTk.PhotoImage(self.image_tk)
         self.lb_photo.config(image=self.image_tk)
 
